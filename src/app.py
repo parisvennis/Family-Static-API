@@ -7,6 +7,7 @@ from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from datastructures import FamilyStructure
 import json
+#from models import Person
 
 
          #from models import Person
@@ -32,32 +33,35 @@ def sitemap():
     # GET ALL MEMBERS
 
 @app.route('/members', methods=['GET'])
-def get_all_members():
-             # this is how you can use the Family datastructure by calling its methods
-    members = jackson_family.get_all_members()
-    if members is None or len(members) < 1:
-        raise APIException("Record is Not Found", status_code=400)
 
-    return jsonify({"family_members" : members}), 200
+
+@app.route('/members', methods=['GET'])
+def get_all_members():
+
+    response = jackson_family.get_all_members()
+    if  response is None or len(response) < 1: 
+      raise APIException("Record is not found", status_code=500)
+
+    return jsonify({"family": jackson_family.get_all_members()}), 200
+
 
 
     # GET ONE SINGLE MEMBER
 
 @app.route('/members/<int:id>', methods=['GET'])
-def get_one_member(id):
+def get_member(id):
     member = jackson_family.get_member()
-    if id > len(member) -1:
-        raise APIException("Record is Not Found", status_code=500)
-    if member is None or len(member) <1 or id > len(member)-1:
-        return jsonify(member)
-    return jsonify({"message":"Member Not Found"})
+
+    if member is None:
+        raise APIException("Bad Request", status_code=500)
+    return jsonify({"family": member(id)
 
 #  ADD MEMBER
-@app.route('/members/', methods=['POST'])
+@app.route('/members/<int:id>', methods=['POST'])
 def add_member():
     member = request.data
     text_data = json.loads(member)
-    jackson_family.add_member(text_data)
+    jackson_family.get_member(text_data)
     return jsonify({"family_members":member(id)}), 200
 
 # DELETE MEMBER
