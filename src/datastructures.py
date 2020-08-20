@@ -7,23 +7,22 @@ update this file to implement the following already declared methods:
 - get_member: Should return a member from the self._members list
 """
 from random import randint
+import uuid 
 
 class FamilyStructure:
     def __init__(self, last_name):
         self.last_name = last_name
 
         # example list of members
-        self._members = [{
-            'first_name':'John',
-            'last_name':last_name,
-            'id':0,
-            'age':24,
-            'lucky_numbers':[7,21]
-            
-        }]
+        self._members = [
+            {'first_name':'David','last_name':last_name,'id':0,'age':24,'lucky_numbers':[2,16]},
+            {'first_name':'Paris','last_name':last_name,'id':1,'age':23,'lucky_numbers':[7,21]},
+            {'first_name':'Tiger','last_name':last_name,'id':2,'age':32,'lucky_numbers':[11,44]}
+            ]
 
     # read-only: Use this method to generate random members ID's when adding members into the list
     def _generateId(self):
+        # while member_id=
         return randint(0, 99999999)
 
     def add_member(self, member):

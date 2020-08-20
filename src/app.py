@@ -57,17 +57,22 @@ def get_member(id):
     return jsonify({"family": member(id)
 
 #  ADD MEMBER
-@app.route('/members/<int:id>', methods=['POST'])
+@app.route('/members', methods=['POST'])
 def add_member():
-    member = request.data
-    text_data = json.loads(member)
-    jackson_family.get_member(text_data)
-    return jsonify({"family_members":member(id)}), 200
+    request_data = request.get_json()
+    request_data["id"]=jackson_family._generateId()
+    jackson_family.add_member(request_data())
+    return jsonify({
+        "message":"Member was Created Sucessfully",
+        "member":request_data
+        }), 200
 
 # DELETE MEMBER
 @app.route('/members/<int:id>', methods=['DELETE'])
 def delete_member(id):
     member = jackson_family.get_member()
+    if member is None:
+        
     jackson_family.delete_member(id)
     return jsonify({"family_members":member(id)}), 200
 
